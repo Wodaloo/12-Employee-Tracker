@@ -157,17 +157,17 @@ const addEmployee = () => {
             {
                 name: "firstName",
                 type: "input",
-                message: "first name?",
+                message: "First name?",
             },
             {
                 name: "lastName",
                 type: "input",
-                message: "last name?",
+                message: "Last name?",
             },
             {
                 name: "managerId",
                 type: "input",
-                message: "manager Id?",
+                message: "Manager ID?",
             },
             {
                 name: "addRole",
@@ -175,21 +175,23 @@ const addEmployee = () => {
                 choices: function () {
                     return res.map((role) => ({ name: role.title, value: role.id }));
                 },
-                message: "role?",
+                message: "Role?",
             },
         ]).then(function (answer) {
             connection.query("INSERT INTO employee SET ?", {
-
-                first_name: answer.firstname,
-                last_name: answer.lastname,
+                first_name: answer.firstName,
+                last_name: answer.lastName,
                 manager_id: answer.managerId,
                 role_id: answer.addRole,
-
-            }),
-                start()
+            }, function (err) {
+                if (err) throw err;
+                console.log("New employee added!");
+                start();
+            });
         })
     });
 };
+
 
 const updateEmployeeRole = () => {
     connection.query("SELECT * FROM role", function (err, res) {
